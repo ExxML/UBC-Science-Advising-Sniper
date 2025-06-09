@@ -100,7 +100,7 @@ if __name__ == "__main__":
     hour = #
     minute = #
 
-    ### ENTER YOUR INFORMATION BELOW AS STRINGS ###
+    ### ENTER REQUIRED INFORMATION BELOW AS STRINGS ###
     ### PREFERRED NAME ###
     preferred_name = ""
 
@@ -218,7 +218,7 @@ if __name__ == "__main__":
         print("\nClicked 'Join'")
 
     except Exception as e:
-        print("\nERROR FINDING/CLICKING BUTTON(S).", e)
+        print("\nERROR JOINING QUEUE.", e)
 
     time.sleep(999999) # Keep Chrome open (for ~11 days)
 
