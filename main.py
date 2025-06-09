@@ -129,7 +129,7 @@ if __name__ == "__main__":
     ### "No"
     sent_message = ""
 
-    input(f"Welcome to UBC Science Advising Queue Sniper!\nInstructions:\n 1. ⭐ ENSURE THE SCIENCE ADVISING OPENING TIME (PST) IS SET CORRECTLY! ⭐\n    You have set Science Advising to open at {hour:02}:{minute:02} PST.\n 2. Ensure all inputted information is correct.\n    Preferred name: {preferred_name}\n    Last initial: {last_initial}\n    Cell phone number: {phone_number}\n    Type of inquiry: {inquiry_type}\n    Student number: {student_number}\n    Have you sent us (Science Advising) a message about this? {sent_message}\n 3. Press `Enter` in the terminal to start the script")
+    input(f"Welcome to UBC Science Advising Queue Sniper!\nInstructions:\n 1. ⭐ ENSURE THE SCIENCE ADVISING OPENING TIME (PST) IS SET CORRECTLY! ⭐\n    You have set the Science Advising opening time to {hour:02}:{minute:02} PST.\n 2. Ensure all inputted information is correct.\n    Preferred name: {preferred_name}\n    Last initial: {last_initial}\n    Cell phone number: {phone_number}\n    Type of inquiry: {inquiry_type}\n    Student number: {student_number}\n    Have you sent us (Science Advising) a message about this? {sent_message}\n 3. Press `Enter` in the terminal to start the script.")
 
     sync_windows_time()
 
