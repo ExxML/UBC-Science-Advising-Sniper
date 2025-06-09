@@ -99,9 +99,37 @@ if __name__ == "__main__":
     ### MODIFY TO MATCH THE OPENING TIME IN PST (24-hour time) ###
     hour = #
     minute = #
-    ### MODIFY TO MATCH THE OPENING TIME IN PST (24-hour time) ###
 
-    input(f"Welcome to UBC Science Advising Queue Sniper!\nInstructions:\n 1. ⭐ ENSURE THE SCIENCE ADVISING OPENING TIME (PST) IS SET CORRECTLY! ⭐\n    Science Advising opens at {hour:02}:{minute:02} PST.\n 2. Ensure all inputted information is correct.\n 3. Press `Enter` in the terminal to start the script")
+    ### ENTER YOUR INFORMATION BELOW AS STRINGS ###
+    ### PREFERRED NAME ###
+    preferred_name = ""
+
+    ### LAST INITIAL ###
+    last_initial = ""
+
+    ### CELL PHONE NUMBER (only CAN numbers will receive text message updates) ###
+    phone_number = ""
+
+    ### SELECT INQUIRY TYPE FOR THE "select.value" FIELD BELOW ###
+    ### Copy-paste one of: 
+    ### "Degree Requirements"
+    ### "Course Registration"
+    ### "Transfer credit"
+    ### "Academic Concessions"
+    ### "Graduation check (Year 4 students)"
+    ### "Other"
+    inquiry_type = ""
+
+    ### STUDENT NUMBER ###
+    student_number = ""
+
+    ### SELECT WHETHER YOU HAVE SENT A MESSAGE FOR THE "select.value" FIELD BELOW ###
+    ### Copy-paste one of: 
+    ### "Yes"
+    ### "No"
+    sent_message = ""
+
+    input(f"Welcome to UBC Science Advising Queue Sniper!\nInstructions:\n 1. ⭐ ENSURE THE SCIENCE ADVISING OPENING TIME (PST) IS SET CORRECTLY! ⭐\n    You have set Science Advising to open at {hour:02}:{minute:02} PST.\n 2. Ensure all inputted information is correct.\n    Preferred name: {preferred_name}\n    Last initial: {last_initial}\n    Cell phone number: {phone_number}\n    Type of inquiry: {inquiry_type}\n    Student number: {student_number}\n    Have you sent us (Science Advising) a message about this? {sent_message}\n 3. Press `Enter` in the terminal to start the script")
 
     sync_windows_time()
 
@@ -110,7 +138,7 @@ if __name__ == "__main__":
     if now > target_time:
         print(f"\nIt is past {hour:02}:{minute:02}.")
     else:
-        wait_seconds = (target_time - now).total_seconds() - 0.100  # Decreased wait time to ensure scripts starts as close to the opening time as possible
+        wait_seconds = (target_time - now).total_seconds() - 0.200  # Decreased wait time to ensure scripts starts as close to the opening time as possible
         print(f"\nWaiting {wait_seconds:.3f} seconds until {hour:02}:{minute:02}.\nDO NOT TOUCH YOUR COMPUTER except to ensure that it does not fall asleep.")
         time.sleep(wait_seconds)
 
@@ -119,84 +147,68 @@ if __name__ == "__main__":
     driver.refresh()
 
     try:
-        register_button = WebDriverWait(driver, 6).until(
+        virtual_advising_button = WebDriverWait(driver, 6).until(
             EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Virtual Advising (Zoom) - Science Advising')]"))
         )
-        register_button.click()
+        virtual_advising_button.click()
         print("\nClicked 'Virtual Advising (Zoom) - Science Advising'")
 
-        confirm_register_button = WebDriverWait(driver, 3).until(
+        next_button = WebDriverWait(driver, 3).until(
             EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Next')]"))
         )
-        confirm_register_button.click()
+        next_button.click()
         print("\nClicked 'Next'")
 
-        preferred_name = WebDriverWait(driver, 6).until(
+        preferred_name_field = WebDriverWait(driver, 6).until(
             EC.presence_of_element_located((By.XPATH, "//label[contains(., 'Preferred Name')]/following::input[1]"))
         )
-        ### PREFERRED NAME ###
-        preferred_name.send_keys("")
+        preferred_name_field.send_keys(preferred_name)
         print("\nFilled 'Preferred Name'")
 
-        last_initial = WebDriverWait(driver, 1).until(
+        last_initial_field = WebDriverWait(driver, 1).until(
             EC.presence_of_element_located((By.XPATH, "//label[contains(., 'Last Initial')]/following::input[1]"))
         )
-        ### LAST INITIAL ###
-        last_initial.send_keys("")
+        last_initial_field.send_keys(last_initial)
         print("\nFilled 'Last Initial'")
 
-        phone_number = WebDriverWait(driver, 1).until(
+        phone_number_field = WebDriverWait(driver, 1).until(
             EC.presence_of_element_located((By.XPATH, "//label[contains(., 'Cell Phone Number (only CAN numbers will receive text message updates)')]/following::input[1]"))
         )
-        ### CELL PHONE NUMBER (only CAN numbers will receive text message updates) ###
-        phone_number.send_keys("")
+        phone_number_field.send_keys(phone_number)
         print("\nFilled 'Cell Phone Number'")
 
         # Use Field ID ONLY if broken
-        # inquiry_type = WebDriverWait(driver, 1).until(
+        # type_of_inquiry = WebDriverWait(driver, 1).until(
         #     EC.presence_of_element_located((By.XPATH, "//select[@id='field-3837ca01-2f7d-4bbb-b26d-33051b63b8cd']"))  # Dropdown field id
         # )
-        inquiry_type = WebDriverWait(driver, 1).until(
+        type_of_inquiry_field = WebDriverWait(driver, 1).until(
             EC.presence_of_element_located((By.XPATH, "//label[contains(@class, 'field__label') and contains(., 'Type of Inquiry')]/ancestor::div[contains(@class, 'field')]//select"))
         )
-        ### SELECT INQUIRY TYPE FOR THE "select.value" FIELD BELOW ###
-        ### Copy-paste one of: 
-        ### 'Degree Requirements'
-        ### 'Course Registration'
-        ### 'Transfer credit'
-        ### 'Academic Concessions'
-        ### 'Graduation check (Year 4 students)'
-        ### 'Other'
         driver.execute_script("""
             const select = arguments[0];
-            select.value = '';
+            select.value = arguments[1];
             select.dispatchEvent(new Event('change', { bubbles: true }));
-        """, inquiry_type)
+        """, type_of_inquiry_field, inquiry_type)
         print("\nFilled 'Type of Inquiry'")
 
-        student_number = WebDriverWait(driver, 1).until(
+        student_number_field = WebDriverWait(driver, 1).until(
             EC.presence_of_element_located((By.XPATH, "//label[contains(., 'UBC Student Number')]/following::input[1]"))
         )
-        ### STUDENT NUMBER ###
-        student_number.send_keys("")
+        student_number_field.send_keys(student_number)
         print("\nFilled 'UBC Student Number'")
 
         # Use Field ID if broken
         # sent_message = WebDriverWait(driver, 1).until(
         #     EC.presence_of_element_located((By.XPATH, "//select[@id='field-fb888639-03e6-477b-bfed-0fedb1184b69']"))  # Dropdown field id
         # )
-        sent_message = WebDriverWait(driver, 1).until(
+        sent_message_field = WebDriverWait(driver, 1).until(
             EC.presence_of_element_located((By.XPATH, "//label[contains(@class, 'field__label') and contains(., 'Have you sent us (Science Advising) a message about this?')]/ancestor::div[contains(@class, 'field')]//select"))
         )
-        ### SELECT WHETHER YOU HAVE SENT A MESSAGE FOR THE "select.value" FIELD BELOW ###
-        ### Copy-paste one of: 
-        ### 'Yes'
-        ### 'No'
         driver.execute_script("""
             const select = arguments[0];
-            select.value = '';
+            select.value = arguments[1];
             select.dispatchEvent(new Event('change', { bubbles: true }));
-        """, sent_message)
+        """, sent_message_field, sent_message)
         print("\nFilled 'Have you sent us (Science Advising) a message about this?'")
 
         join_button = WebDriverWait(driver, 1).until(
