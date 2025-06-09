@@ -1,5 +1,5 @@
-import time
-from datetime import datetime
+import time as time_obj
+from datetime import datetime, time
 from zoneinfo import ZoneInfo
 import subprocess
 import sys
@@ -129,18 +129,20 @@ if __name__ == "__main__":
     ### "No"
     sent_message = ""
 
-    input(f"Welcome to UBC Science Advising Queue Sniper!\nInstructions:\n 1. ⭐ ENSURE THE SCIENCE ADVISING OPENING TIME (PST) IS SET CORRECTLY! ⭐\n    You have set the Science Advising opening time to {hour:02}:{minute:02} PST.\n 2. Ensure all inputted information is correct.\n    Preferred name: {preferred_name}\n    Last initial: {last_initial}\n    Cell phone number: {phone_number}\n    Type of inquiry: {inquiry_type}\n    Student number: {student_number}\n    Have you sent us (Science Advising) a message about this? {sent_message}\n 3. Press `Enter` in the terminal to start the script.")
+    reg_time = time(hour, minute)
+    form_reg_time = reg_time.strftime("%I:%M %p").lstrip("0").lower()  # Formatted as 12-hour time
+    input(f"Welcome to UBC Science Advising Queue Sniper!\nInstructions:\n 1. ⭐ENSURE THE SCIENCE ADVISING OPENING TIME IS SET CORRECTLY!⭐\n    You have set the Science Advising opening time to {form_reg_time} PST.\n 2. Ensure all inputted information is correct.\n    Preferred name: {preferred_name}\n    Last initial: {last_initial}\n    Cell phone number: {phone_number}\n    Type of inquiry: {inquiry_type}\n    Student number: {student_number}\n    Have you sent us (Science Advising) a message about this? {sent_message}\n 3. Press `Enter` in the terminal to start the script.")
 
     sync_windows_time()
 
     target_time = datetime(year, month, day, hour, minute, second, microsecond, pst_tz)
     now = datetime.now(pst_tz)
     if now > target_time:
-        print(f"\nIt is past {hour:02}:{minute:02}.")
+        print(f"\nIt is past {form_reg_time}.")
     else:
         wait_seconds = (target_time - now).total_seconds() - 0.200  # Decreased wait time to ensure scripts starts as close to the opening time as possible
-        print(f"\nWaiting {wait_seconds:.3f} seconds until {hour:02}:{minute:02}.\nDO NOT TOUCH YOUR COMPUTER except to ensure that it does not fall asleep.")
-        time.sleep(wait_seconds)
+        print(f"\nWaiting {wait_seconds:.3f} seconds until {form_reg_time}.\nDO NOT TOUCH YOUR COMPUTER except to ensure that it does not fall asleep.")
+        time_obj.sleep(wait_seconds)
 
     # Refresh the page at the target time
     print("\nRefreshing the page...")
@@ -220,7 +222,7 @@ if __name__ == "__main__":
     except Exception as e:
         print("\nERROR JOINING QUEUE.", e)
 
-    time.sleep(999999) # Keep Chrome open (for ~11 days)
+    time_obj.sleep(999999) # Keep Chrome open (for ~11 days)
 
     # Cleanup (optional)
     # driver.quit()
