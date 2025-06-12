@@ -21,6 +21,6 @@ pip install -r requirements.txt
 *Connect to Ethernet for best possible results!*
 1. Open `main.py` and modify the `hour` and `minute` variables to match the Science Advising opening time **in PST (24-hour time)**. These variables are marked with the comment: `### MODIFY TO MATCH THE OPENING TIME IN PST (24-hour time) ###`.
 2. In `main.py`, fill in the `preferred_name`, `last_initial`, `phone_number`, `inquiry_type`, `student_number`, and `sent_message` variables to match your information. These variables are marked with the comment: `### ENTER REQUIRED INFORMATION BELOW AS STRINGS ###`.
-3. Run the `main.py`. **You will be prompted to run the program as Administrator so that your computer time can be automatically synced.**
+3. Run the `main.py`. It is recommended to run this program AT LEAST 30 seconds prior to the Science Advising opening time. **You will be prompted to run the program as Administrator so that your computer time can be automatically synced.**
 4. Press `Enter` in the terminal to start the script.
 5. The script will wait until the specified opening time to refresh the page and automatically join the queue.
