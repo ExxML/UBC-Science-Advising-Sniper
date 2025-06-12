@@ -144,7 +144,7 @@ if __name__ == "__main__":
         seconds_to_target = (target_time - now).total_seconds()
         Timer(seconds_to_target - 15.000, driver.refresh).start() # Preemptive refresh for caching
         wait_seconds = seconds_to_target - 0.150  # Decreased wait time to ensure scripts starts as close to the opening time as possible
-        print(f"\nWaiting {wait_seconds:.3f} seconds until {form_reg_time}.\nThe page will refresh ~15 seconds before the target time.\nDO NOT TOUCH YOUR COMPUTER except to ensure that it does not fall asleep.")
+        print(f"\nWaiting {wait_seconds:.3f} seconds until {form_reg_time}.\nThe page will refresh 15 seconds before the target time.\nDO NOT TOUCH YOUR COMPUTER except to ensure that it does not fall asleep.")
         time_obj.sleep(wait_seconds)
 
     # Refresh the page at the target time
