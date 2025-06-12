@@ -1,6 +1,7 @@
 import time as time_obj
 from datetime import datetime, time
 from zoneinfo import ZoneInfo
+from threading import Timer
 import subprocess
 import sys
 import ctypes
@@ -140,16 +141,18 @@ if __name__ == "__main__":
     if now > target_time:
         print(f"\nIt is past {form_reg_time}.")
     else:
-        wait_seconds = (target_time - now).total_seconds() - 0.200  # Decreased wait time to ensure scripts starts as close to the opening time as possible
-        print(f"\nWaiting {wait_seconds:.3f} seconds until {form_reg_time}.\nDO NOT TOUCH YOUR COMPUTER except to ensure that it does not fall asleep.")
+        seconds_to_target = (target_time - now).total_seconds()
+        Timer(seconds_to_target - 15.000, driver.refresh).start() # Preemptive refresh for caching
+        wait_seconds = seconds_to_target - 0.150  # Decreased wait time to ensure scripts starts as close to the opening time as possible
+        print(f"\nWaiting {wait_seconds:.3f} seconds until {form_reg_time}.\nThe page will refresh ~15 seconds before the target time.\nDO NOT TOUCH YOUR COMPUTER except to ensure that it does not fall asleep.")
         time_obj.sleep(wait_seconds)
 
     # Refresh the page at the target time
-    print("\nRefreshing the page...")
+    print("\nTarget time reached. Refreshing the page...")
     driver.refresh()
 
     try:
-        virtual_advising_button = WebDriverWait(driver, 6).until(
+        virtual_advising_button = WebDriverWait(driver, 10).until(
             EC.element_to_be_clickable((By.XPATH, "//button[contains(., 'Virtual Advising (Zoom) - Science Advising')]"))
         )
         virtual_advising_button.click()
@@ -161,7 +164,7 @@ if __name__ == "__main__":
         next_button.click()
         print("\nClicked 'Next'")
 
-        preferred_name_field = WebDriverWait(driver, 6).until(
+        preferred_name_field = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.XPATH, "//label[contains(., 'Preferred Name')]/following::input[1]"))
         )
         preferred_name_field.send_keys(preferred_name)
@@ -219,8 +222,10 @@ if __name__ == "__main__":
         join_button.click()
         print("\nClicked 'Join'")
 
+        print("\nCourse registration successful. Close Chrome and the terminal to exit.")
+
     except Exception as e:
-        print("\nERROR JOINING QUEUE.", e)
+        print("\nERROR JOINING QUEUE. Close Chrome and the terminal to exit.\n", e)
 
     time_obj.sleep(999999) # Keep Chrome open (for ~11 days)
 
