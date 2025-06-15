@@ -11,6 +11,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 
 def set_chrome_settings():
     chrome_options = Options()
@@ -49,7 +50,7 @@ def set_chrome_settings():
     }
     chrome_options.add_experimental_option("prefs", prefs)
 
-    chrome_service = Service("./chromedriver.exe")
+    chrome_service = Service(ChromeDriverManager().install())
     chrome_service.creation_flags = 0x8000000  # Suppress logs
 
     return chrome_service, chrome_options
@@ -141,9 +142,8 @@ if __name__ == "__main__":
     if now > target_time:
         print(f"\nIt is past {form_reg_time}.")
     else:
-        seconds_to_target = (target_time - now).total_seconds()
-        Timer(seconds_to_target - 15.000, driver.refresh).start() # Preemptive refresh for caching
-        wait_seconds = seconds_to_target - 0.150  # Decreased wait time to ensure scripts starts as close to the opening time as possible
+        wait_seconds = (target_time - now).total_seconds()
+        Timer(wait_seconds - 15.000, driver.refresh).start()  # Preemptive refresh for caching
         print(f"\nWaiting {wait_seconds:.3f} seconds until {form_reg_time}.\nThe page will refresh 15 seconds before the target time.\nDO NOT TOUCH YOUR COMPUTER except to ensure that it does not fall asleep.")
         time_obj.sleep(wait_seconds)
 
