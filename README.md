@@ -4,7 +4,7 @@ UBC Science Advising Queue Sniper is a Python script for Windows that automates 
 
 ## Demo
 
-Video link: 
+Video link: https://jmp.sh/Mbs5eQey
 
 ## Installation
 
